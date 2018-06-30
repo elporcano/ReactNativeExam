@@ -18,25 +18,47 @@ export default class App extends React.Component {
     constructor(props){
     super(props);
     this.state = {
-                email :'',
-                validated: false ,
+                  email :'',
+                  emailValidate: false ,
+                  emailWarning:'',
+                  passwordValidate: false,
+                  passwordWarning: ''
                  }
   };
 
-  validate = (text) => {
+  validateEmail = (text) => {
     console.log(text);
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
     if(reg.test(text) === false)
     {
-    console.log("Email is Not Correct");
+    console.log("Invalid Email");
+    this.setState({emailWarning:"not correct format for email address"});
     this.setState({email:text})
     return false;
       }
     else {
       this.setState({email:text})
-      console.log("Email is Correct");
+      console.log("Valid Email");
+      this.setState({emailWarning:" "});
+      this.setState({emailValidate:true})
     }
   }
+
+    validatePassword = (text) => {
+      console.log(text);
+      let reg = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/ ;
+      if(reg.test(text) === false)
+      {
+      console.log("Invalid Password");
+      this.setState({passwordWarning:"please use at least 6-12 characters"});
+      return false;
+        }
+      else {
+        console.log("Valid Password");
+        this.setState({passwordWarning:" "});
+        this.setState({passwordValidate:true})
+      }
+    }
 
 
   render() {
@@ -61,18 +83,28 @@ export default class App extends React.Component {
               <TextInput
                   style={styles.textInput}
                   placeholder="Input email address"
-                  onChangeText={(text) => this.validate(text)}
+                  onChangeText={(text) => this.validateEmail(text)}
               />
+              <Text style={{color:'red'}}>
+                {this.state.emailWarning}
+              </Text>
           </Container>
+
+          
+
           <Container>
               <Label text="Password" />
               <TextInput
                   secureTextEntry={true}
                   style={styles.textInput}
                   placeholder="Input Password"
+                  onChangeText={(text) => this.validatePassword(text)}
               />
+              <Text style={{color:'red'}}>
+                {this.state.passwordWarning}
+              </Text>
           </Container>
-        
+
           <Container>
             <TouchableOpacity >
               <View style={styles.signIn}>
