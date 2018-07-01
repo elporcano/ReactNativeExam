@@ -6,7 +6,8 @@ import {
     ScrollView,
     View, 
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert
   } from 'react-native';
 
 import Container from 'ReactNativeExam/components/Container';
@@ -26,23 +27,23 @@ export default class App extends React.Component {
                  }
   };
 
-  validateEmail = (text) => {
-    console.log(text);
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
-    if(reg.test(text) === false)
-    {
-    console.log("Invalid Email");
-    this.setState({emailWarning:"not correct format for email address"});
-    this.setState({email:text})
-    return false;
-      }
-    else {
+    validateEmail = (text) => {
+      console.log(text);
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+      if(reg.test(text) === false)
+      {
+      console.log("Invalid Email");
+      this.setState({emailWarning:"not correct format for email address"});
       this.setState({email:text})
-      console.log("Valid Email");
-      this.setState({emailWarning:" "});
-      this.setState({emailValidate:true})
+      return false;
+        }
+      else {
+        this.setState({email:text})
+        console.log("Valid Email");
+        this.setState({emailWarning:" "});
+        this.setState({emailValidate:true})
+      }
     }
-  }
 
     validatePassword = (text) => {
       console.log(text);
@@ -59,6 +60,8 @@ export default class App extends React.Component {
         this.setState({passwordValidate:true})
       }
     }
+
+    
 
 
   render() {
@@ -106,7 +109,15 @@ export default class App extends React.Component {
           </Container>
 
           <Container>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={() =>
+                  {
+                    if (this.state.emailValidate==true&&this.state.passwordValidate==true) 
+                    {
+                      Alert.alert('Sign In','Success')
+                    }    
+                  }
+                }>
+
               <View style={styles.signIn}>
                 <Text style={{color:'white',fontSize: 20,
                               fontWeight: 'bold',
@@ -114,6 +125,7 @@ export default class App extends React.Component {
                   Sign In
                 </Text>
               </View>
+
             </TouchableOpacity>
           </Container>
 
@@ -132,7 +144,7 @@ const styles = StyleSheet.create({
   {
     flex: 1,
     flexDirection:'column',
-    backgroundColor: '#fff',
+    backgroundColor: '#f2e6ff',
   },
 
   textInput:
@@ -145,7 +157,6 @@ const styles = StyleSheet.create({
   box:
   {
     flex: 1,
-    backgroundColor:'#f2e6ff',
     padding: 20,
     alignItems:'stretch'
   },
@@ -154,8 +165,6 @@ const styles = StyleSheet.create({
   logo:
   {
     flex:1,
-    height: 250,
-    width: undefined
   },
     
   signIn:
